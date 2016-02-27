@@ -28,7 +28,7 @@ public class Product{
         return prodName;
     }
     
-    public void setPrice(int price){
+    public void setPrice(double price){
         prodPrice = price;
     }
     
@@ -46,6 +46,8 @@ public class Product{
     
     @Override
     public String toString(){
-        return "Name: "+getName()+ ", Price: " +getPrice()+ ", Quantity: " + getQty();
+        String inMoneyFormat = String.format("$%.2f", getPrice());
+        return "Name: "+getName()+ ", Price: "+inMoneyFormat+ ", Quantity: " 
+                + getQty();
     }
 }
