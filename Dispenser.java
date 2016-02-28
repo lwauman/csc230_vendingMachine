@@ -1,4 +1,5 @@
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -29,22 +30,24 @@ public class Dispenser {
         double newPrice;
         
         System.out.println(toString());
-        System.out.println("");
         System.out.print("Enter the product of which you would "
                 + "like to modify the price (1-5): " );
         prodNum = kb.nextInt();
         System.out.println("Product selected: "+items[prodNum-1].getName());
         System.out.print("Enter the new price for the selected item: $");
         newPrice = kb.nextDouble();
-        items[prodNum-1].setPrice(newPrice);
-        System.out.println("Price Updated");
+        if(newPrice>0){
+            items[prodNum-1].setPrice(newPrice);
+            System.out.println("Price Updated\n");
+        }
+        else
+            System.out.println("Invalid Price Entered\n");
     }
     public void restockProduct(){
         Scanner kb = new Scanner(System.in);
         int prodNum, toAdd, totalAfterRestock;
         //display products
         System.out.println(toString());
-        System.out.println("");
         //gather info 
         System.out.print("Enter the product you would like to "
                 + "add inventory to (1-5): ");
@@ -57,14 +60,14 @@ public class Dispenser {
         //change product
         totalAfterRestock = items[prodNum-1].getQty()+toAdd;
         items[prodNum-1].setQty(totalAfterRestock);
-        System.out.println("Quantity Updated");
+        System.out.println("Quantity Updated\n");
     }
     public void setUpDispenser(){
         if(numItems<6){
             Scanner kb = new Scanner(System.in);
             String productName;
             int productPrice, quantity;
-            int i=0;
+            int i=numItems;
             while(i<5){
                 System.out.print("Enter product name: ");
                 productName = kb.nextLine();
@@ -120,14 +123,19 @@ public class Dispenser {
         int prodNum;
         
         System.out.println(toString());
-        System.out.println("");
-        
         System.out.print("Enter the product you would like to "
                 + "delete (1-5): ");
         prodNum = kb.nextInt();
         items[prodNum-1] = null;
         numItems--;
-        System.out.println("Item deleted");
+        System.out.println("Item deleted\n");
+    }
+    public void tempSetup(){
+        items[0] = new Product("Pepsi", 1.00, 5);
+        items[1] = new Product("Coke", 1.00, 5);
+        items[2] = new Product("Mt. Dew", .75, 5);
+        items[3] = new Product("Sprite", .75, 5);
+        items[4] = new Product("Water", .50, 5);
     }
  
     
