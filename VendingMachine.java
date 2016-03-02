@@ -17,95 +17,102 @@ public class VendingMachine {
         while(!stopLooping){
             stopLooping = bossWork();
         }
+        System.out.println("Shutting Down");
     }
     public void run(){
-    
+        showUserChoice();
+        
     }
     private void showUserChoice(){
+        Scanner kb = new Scanner(System.in);
+        System.out.println(snackMachine.toString());
+        moneyBox.displayCoins();
+        System.out.print("Enter money first and then select a product(1-5): ");
+        char userInput = kb.nextLine().toUpperCase().charAt(0);
+        serviceCustomer(userInput);
         
     }
     private void serviceCustomer(char choice){
-        
+        if(choice=='0'){
+            System.out.println("");
+        }
+        else if(moneyBox.option(choice)){
+            System.out.println("");
+            run();
+        }
+        else{
+            if(choice != 'R'){
+                if(snackMachine.dispense(choice)== 1){
+                    int prodPrice = (int)(snackMachine.getPrice(choice)*100);
+                    if(moneyBox.getAmount()<prodPrice){
+                        System.out.println("Insufficient funds.");
+                        System.out.println("");
+                        run();
+                    }
+                    else{
+                        moneyBox.giveChange(moneyBox.getAmount()-prodPrice);
+                        System.out.println("Enjoy. Please take your change.");
+                        System.out.println("");
+                        run();
+                    }
+                        
+                }
+                else{
+                    System.out.println("Out of Stock");
+                    System.out.println("");
+                    run();
+                }
+            }
+            else if(choice == 'R'){
+                System.out.println("Change dispenced.");
+                System.out.println("");
+                run();
+            }
+            else
+                System.out.println("Out of Stock");
+       
+        }
     }
+
     private boolean bossWork(){
         Scanner kb = new Scanner(System.in);
         int choice;
         
         System.out.println("Boss Menu\n"
                 + "1: Set Up Dispenser\n"
-                + "2: Check Price\n"
-                + "3: Change Price\n"
-                + "4: Check Stock of Product\n"
-                + "5: Restock Product\n"
-                + "6: Delete Product\n"
-                + "7: Finished");
-        System.out.print("Select 1-7: ");
+                + "2: Change Price\n"
+                + "3: Restock Product\n"
+                + "4: Delete Product\n"
+                + "5: Start Machine\n"
+                + "6: Shutdown");
+        System.out.print("Select 1-6: ");
         try{
             choice = kb.nextInt();
         }
         catch(InputMismatchException  e){
             System.out.println("Invalid Input");
-            choice = 8;
+            choice = 6;
         }
         System.out.println("");
         
         if(choice==1){
             snackMachine.tempSetup();
-            System.out.println("Setup Complete");
+            //snackMachine.setUpDispenser();
+            System.out.println("Setup Complete\n");
             return false;
         }
         else if(choice==2){
-            System.out.println("Selected: Check Price");
-            System.out.println(snackMachine.toString());
-            System.out.print("Enter the product you would like to "
-                + "price check (1-5): ");
-            try{
-                choice = kb.nextInt();
-            }catch(InputMismatchException e){
-                System.out.println("Invalid Entry\n");
-                return false;
-            }
-            if(choice>0 && choice<6){
-                double toFormat = snackMachine.getPrice(Integer.toString(choice).charAt(0));
-                if(toFormat>0){
-                    System.out.println(String.format("The price of product %d is $%.2f.\n", choice, toFormat));
-                }
-                else
-                    System.out.println("Product out of stock\n");
-            }
-            else
-                System.out.println("Invalid Entry\n");
-            return false;
-        }
-        else if(choice==3){
             System.out.println("Selected: Change Price");
-            System.out.println(snackMachine.toString());
             try{
                 snackMachine.changePrice();
             }catch(InputMismatchException | ArrayIndexOutOfBoundsException e){
                 System.out.println("Invalid Entry\n");
+            }catch(NullPointerException e){
+                System.out.println("Product doesn't exist\n");
             }
             return false;
         }
-        else if(choice==4){
-            System.out.println("Selected: Check Stock of Product");
-            System.out.println(snackMachine.toString());
-            System.out.print("Enter the number of the product "
-                    + "that you wish to check stock of (1-5): ");
-            try{
-                choice = kb.nextInt();
-                char choiceToChar = Integer.toString(choice).charAt(0);
-                if(snackMachine.inStock(choiceToChar)){
-                    System.out.println("Product "+choice+" is in stock.\n");
-                }
-                else
-                    System.out.println("Product "+choice+" is out of stock\n");
-            }catch(InputMismatchException e){
-                System.out.println("Invalid Entry\n");
-            }
-            return false;
-        }
-        else if(choice==5){
+        else if(choice==3){
             try{
                 System.out.println("Selected: Restock Product");
                 snackMachine.restockProduct();
@@ -118,7 +125,7 @@ public class VendingMachine {
             }
             return false;
         }
-        else if(choice==6){
+        else if(choice==4){
             System.out.println("Selected: Delete Product");
             try{
                 snackMachine.deleteProduct();
@@ -128,7 +135,11 @@ public class VendingMachine {
             }
             return false;
         }
-        else if(choice==7){
+        else if(choice==5){
+            run();
+            return false;
+        }
+        else if(choice==6){
             return true;
         }
         else{

@@ -48,10 +48,15 @@ public class Coinbox {
             numN -= reduceN;
             amount = 0;
         }
+        else if(change == 0){
+            amount = 0;
+        }
     }
     
     public void displayCoins(){
-        System.out.println("Current balance:"+" "+amount);
+        double amountInMoneyFormat = (double)amount/100;
+        System.out.printf("Current balance: $%.2f\n", amountInMoneyFormat);
+        //System.out.println("Current balance:"+" $"+amountInMoneyFormat);
         System.out.println("Please insert Q, D, N, or R");
     }
     
@@ -62,15 +67,16 @@ public class Coinbox {
     public boolean option(char choice){
         if(choice == 'Q'|| choice == 'D'|| choice == 'N'){
             takeCoin(choice);
-            displayAmount();
+            //displayAmount();
             return true;
         }
         else if(choice == 'R'){
             giveChange(amount);
             return false;
         }
-        else
+        else{
             return false;
+        }
     }
 
 
@@ -90,7 +96,9 @@ public class Coinbox {
     }
 
     private void displayAmount(){
-        System.out.println("Current balance:"+" "+amount);
+        double amountInMoneyFormat = (double)amount/100;
+        System.out.printf("Current balance: $%.2f\n", amountInMoneyFormat);
+
     } 
 
 

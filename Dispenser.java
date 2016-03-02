@@ -30,8 +30,8 @@ public class Dispenser {
         double newPrice;
         
         System.out.println(toString());
-        System.out.print("Enter the product of which you would "
-                + "like to modify the price (1-5): " );
+        System.out.print("Enter the number of the product that you"
+                + " wish to modify (1-5): " );
         prodNum = kb.nextInt();
         System.out.println("Product selected: "+items[prodNum-1].getName());
         System.out.print("Enter the new price for the selected item: $");
@@ -49,8 +49,8 @@ public class Dispenser {
         //display products
         System.out.println(toString());
         //gather info 
-        System.out.print("Enter the product you would like to "
-                + "add inventory to (1-5): ");
+        System.out.print("Enter the number of the product that you wish "
+                + "to modify (1-5): ");
         prodNum = kb.nextInt();
         System.out.println("Product selected: "+items[prodNum-1].getName());
         System.out.print("Enter the number of the selected product "
@@ -66,22 +66,28 @@ public class Dispenser {
         if(numItems<6){
             Scanner kb = new Scanner(System.in);
             String productName;
-            int productPrice, quantity;
-            int i=numItems;
-            while(i<5){
+            double productPrice;
+            int quantity;
+            int index=-1;
+            for(int i=0;i<5;i++)
+                if(items[i]==null){
+                    index=i;
+                    break;
+                }
+            while(index!=-1 && index<5 && items[index]==null){
                 System.out.print("Enter product name: ");
                 productName = kb.nextLine();
-                System.out.print("Enter the price of the product: ");
-                productPrice = kb.nextInt();
+                System.out.print("Enter the price of the product: $");
+                productPrice = kb.nextDouble();
                 System.out.print("Enter the number of products to be stocked: ");
                 quantity = kb.nextInt();
                 kb.nextLine();
-                items[i] = new Product();
-                items[i].setName(productName);
-                items[i].setPrice(productPrice);
-                items[i].setQty(quantity);
+                items[index] = new Product();
+                items[index].setName(productName);
+                items[index].setPrice(productPrice);
+                items[index].setQty(quantity);
                 numItems++;
-                i++;
+                index++;
             }
         }
         else
@@ -123,7 +129,7 @@ public class Dispenser {
         int prodNum;
         
         System.out.println(toString());
-        System.out.print("Enter the product you would like to "
+        System.out.print("Enter the number of the product you would like to "
                 + "delete (1-5): ");
         prodNum = kb.nextInt();
         items[prodNum-1] = null;
@@ -131,11 +137,11 @@ public class Dispenser {
         System.out.println("Item deleted\n");
     }
     public void tempSetup(){
-        items[0] = new Product("Pepsi", 1.00, 5);
-        items[1] = new Product("Coke", 1.00, 5);
-        items[2] = new Product("Mt. Dew", .75, 5);
-        items[3] = new Product("Sprite", .75, 5);
-        items[4] = new Product("Water", .50, 5);
+        items[0] = new Product("Pepsi", 1.00, 1);
+        items[1] = new Product("Coke", 1.00, 1);
+        items[2] = new Product("Mt. Dew", .75, 0);
+        items[3] = new Product("Sprite", .75, 1);
+        items[4] = new Product("Water", .50, 1);
     }
  
     
