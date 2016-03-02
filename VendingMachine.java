@@ -21,7 +21,6 @@ public class VendingMachine {
     }
     public void run(){
         showUserChoice();
-        
     }
     private void showUserChoice(){
         Scanner kb = new Scanner(System.in);
@@ -42,35 +41,46 @@ public class VendingMachine {
         }
         else{
             if(choice != 'R'){
-                if(snackMachine.dispense(choice)== 1){
+                if(snackMachine.option(choice)){
                     int prodPrice = (int)(snackMachine.getPrice(choice)*100);
                     if(moneyBox.getAmount()<prodPrice){
-                        System.out.println("Insufficient funds.");
-                        System.out.println("");
-                        run();
-                    }
+                            System.out.println("Insufficient funds.");
+                            System.out.println("");
+                            run();
+                        }
                     else{
-                        moneyBox.giveChange(moneyBox.getAmount()-prodPrice);
-                        System.out.println("Enjoy. Please take your change.");
-                        System.out.println("");
-                        run();
+                        if(snackMachine.dispense(choice) == 1){
+                            int change = moneyBox.getAmount()-prodPrice;
+                            if(change>0){
+                                moneyBox.giveChange(change);
+                                System.out.println("Enjoy. Please take your change.");
+                            }
+                            else{
+                                moneyBox.giveChange(change);
+                                System.out.println("Enjoy");
+                            }
+                            System.out.println("");
+                            run();
+                        }
+                        else{
+                            System.out.println("Out of Stock");
+                            System.out.println("");
+                            run();
+                        }
                     }
-                        
                 }
                 else{
-                    System.out.println("Out of Stock");
-                    System.out.println("");
+                    System.out.println("Invalid Entry\n");
                     run();
                 }
+                    
             }
-            else if(choice == 'R'){
+            else{
+                moneyBox.giveChange(moneyBox.getAmount());
                 System.out.println("Change dispenced.");
                 System.out.println("");
                 run();
             }
-            else
-                System.out.println("Out of Stock");
-       
         }
     }
 
@@ -96,9 +106,14 @@ public class VendingMachine {
         System.out.println("");
         
         if(choice==1){
-            snackMachine.tempSetup();
-            //snackMachine.setUpDispenser();
-            System.out.println("Setup Complete\n");
+            //snackMachine.tempSetup();
+            try{
+               snackMachine.setUpDispenser();
+                System.out.println("Setup Complete\n"); 
+            }catch(InputMismatchException e){
+                System.out.println("Invalid Entry. All products have been saved"
+                        + " upto this point.\n");
+            }
             return false;
         }
         else if(choice==2){

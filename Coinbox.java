@@ -13,6 +13,10 @@ public class Coinbox {
         amount = 0;
     }
     
+    public String toString(){
+        return numQ + " "+ numD+" "+numN;
+}
+    
     public void giveChange(int change){
         int reduceQ, reduceD, reduceN, updatedChange=change;
         if(change>0){
@@ -56,7 +60,6 @@ public class Coinbox {
     public void displayCoins(){
         double amountInMoneyFormat = (double)amount/100;
         System.out.printf("Current balance: $%.2f\n", amountInMoneyFormat);
-        //System.out.println("Current balance:"+" $"+amountInMoneyFormat);
         System.out.println("Please insert Q, D, N, or R");
     }
     
@@ -67,7 +70,9 @@ public class Coinbox {
     public boolean option(char choice){
         if(choice == 'Q'|| choice == 'D'|| choice == 'N'){
             takeCoin(choice);
-            //displayAmount();
+            //displayAmount(); This was called for in the UML but it results in the 
+            //current balance being printed twice since ShowUserChoice() in Vending Machine
+            //also display current balance
             return true;
         }
         else if(choice == 'R'){
