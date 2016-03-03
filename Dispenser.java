@@ -102,6 +102,9 @@ public class Dispenser {
                     productName = kb.nextLine();
                 }
                 while(productPrice<=0){
+                    System.out.println("Enter prices as they are normally formatted.\n"
+                            + "Example: One dollar and 25 cents = $1.25, "
+                            + "75 cents = $0.75 or $.75, 25 cents = $0.25 or $.25");
                     System.out.print("Enter the price of the product: $");
                     productPrice = kb.nextDouble();
                 }
@@ -161,17 +164,28 @@ public class Dispenser {
             return 1;
         }
     }
+    //allows boss to delete a product
     public void deleteProduct(){
         Scanner kb = new Scanner(System.in);
         int prodNum;
-        
+        //display products
         System.out.println(toString());
+        
+        //gather info
         System.out.print("Enter the number of the product you would like to "
                 + "delete (1-5): ");
         prodNum = kb.nextInt();
-        items[prodNum-1] = null;
-        numItems--;
-        System.out.println("Item deleted\n");
+        //delete item
+        if(prodNum>=1 && prodNum<=5){
+            items[prodNum-1] = null;
+            numItems--;
+            System.out.println("Item deleted\n");
+        }
+        else{
+            System.out.println("Invalid Entry\n");
+        }
+            
+        
     }
     public void tempSetup(){
         items[0] = new Product("Pepsi", 1.00, 1);
